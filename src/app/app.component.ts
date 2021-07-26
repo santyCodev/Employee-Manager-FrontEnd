@@ -1,10 +1,28 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Employee } from './model/employee';
+import { EmployeeService } from './services/employee.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'employee-manager-front';
+export class AppComponent implements OnInit{
+  public employees: Employee[] = [];
+
+  constructor(private employeeService: EmployeeService) {}
+
+  ngOnInit(): void {
+    this.getEmployees();
+  }
+
+  public getEmployees(): void {
+    this.employeeService.getEmployees().subscribe((res: Employee[]) => {
+      this.employees = res;
+    },
+    (error: HttpErrorResponse) => {
+      alert(error.message);
+    });
+  }
 }
