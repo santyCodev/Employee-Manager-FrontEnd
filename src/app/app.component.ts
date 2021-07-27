@@ -10,6 +10,8 @@ import { EmployeeService } from './services/employee.service';
 })
 export class AppComponent implements OnInit{
   public employees: Employee[] = [];
+  public errorMessage: string = '';
+  public showErrorMessage: boolean = false;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -19,10 +21,17 @@ export class AppComponent implements OnInit{
 
   public getEmployees(): void {
     this.employeeService.getEmployees().subscribe((res: Employee[]) => {
-      this.employees = res;
+      if(res.length !== 0) {
+        this.employees = res;
+      }
+      else {
+        this.errorMessage = "No employees";
+        this.showErrorMessage = true;
+      }
     },
     (error: HttpErrorResponse) => {
-      alert(error.message);
+      this.errorMessage = error.message;
+      this.showErrorMessage = true;
     });
   }
 }
