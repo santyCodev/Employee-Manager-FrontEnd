@@ -34,4 +34,19 @@ export class AppComponent implements OnInit{
       this.showErrorMessage = true;
     });
   }
+
+  public onOpenModal(employee: Employee, mode: string): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-bs-toggle', 'modal');
+    switch(mode) {
+      case 'add':     button.setAttribute('data-bs-target', '#addEmployeeModal'); break;
+      case 'edit':    button.setAttribute('data-bs-target', '#updateEmployeeModal'); break;
+      case 'delete':  button.setAttribute('data-bs-target', '#deleteEmployeeModal'); break;
+    }
+    container?.appendChild(button);
+    button.click();
+  }
 }
