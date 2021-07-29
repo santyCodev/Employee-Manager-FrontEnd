@@ -11,6 +11,7 @@ import { EmployeeService } from './services/employee.service';
 })
 export class AppComponent implements OnInit{
   public employees: Employee[] = [];
+  public editEmployee?: Employee;
   public errorMessage: string = '';
   public showErrorMessage: boolean = false;
 
@@ -41,6 +42,19 @@ export class AppComponent implements OnInit{
     this.employeeService.addEmployee(addForm.value).subscribe((res: Employee) => {
       console.log(res);
       this.getEmployees();
+      addForm.reset();
+    },
+    (error: HttpErrorResponse) => {
+      this.errorMessage = error.message;
+      this.showErrorMessage = true;
+      addForm.reset();
+    });    
+  }
+
+  public onUpdateEmployee(employee: Employee): void {
+    this.employeeService.updateEmployee(employee).subscribe((res: Employee) => {
+      console.log(res);
+      this.getEmployees();
     },
     (error: HttpErrorResponse) => {
       this.errorMessage = error.message;
@@ -56,7 +70,10 @@ export class AppComponent implements OnInit{
     button.setAttribute('data-bs-toggle', 'modal');
     switch(mode) {
       case 'add':     button.setAttribute('data-bs-target', '#addEmployeeModal'); break;
-      case 'edit':    button.setAttribute('data-bs-target', '#updateEmployeeModal'); break;
+      case 'edit':    
+        this.editEmployee = employee;
+        button.setAttribute('data-bs-target', '#updateEmployeeModal'); 
+        break;
       case 'delete':  button.setAttribute('data-bs-target', '#deleteEmployeeModal'); break;
     }
     container?.appendChild(button);
