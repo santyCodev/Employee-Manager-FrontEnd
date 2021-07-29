@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Employee } from './model/employee';
 import { EmployeeService } from './services/employee.service';
 
@@ -33,6 +34,18 @@ export class AppComponent implements OnInit{
       this.errorMessage = error.message;
       this.showErrorMessage = true;
     });
+  }
+
+  public onAddEmployee(addForm: NgForm): void {
+    document.getElementById('add-employee-form')?.click();
+    this.employeeService.addEmployee(addForm.value).subscribe((res: Employee) => {
+      console.log(res);
+      this.getEmployees();
+    },
+    (error: HttpErrorResponse) => {
+      this.errorMessage = error.message;
+      this.showErrorMessage = true;
+    });    
   }
 
   public onOpenModal(employee: Employee, mode: string): void {
