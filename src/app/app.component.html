@@ -38,7 +38,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+          <h5 class="modal-title" id="addModalLabel">Add Employee</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -77,10 +77,10 @@
 
   <!-- Update Employee Modal -->
   <div class="modal fade" id="updateEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog"  role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
+          <h5 class="modal-title" id="updateModalLabel">Edit Employee {{editEmployee?.name}}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -121,18 +121,20 @@
 
   <!-- Delete Employee Modal -->
   <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Employee</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="deleteModalLabel">Delete Employee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
-          ...
+          <p>Are you sure you want to delete employee {{deleteEmployee?.name}}?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button (click)="onDeleteEmployee(deleteEmployee?.id!)" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
         </div>
       </div>
     </div>

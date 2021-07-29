@@ -12,6 +12,7 @@ import { EmployeeService } from './services/employee.service';
 export class AppComponent implements OnInit{
   public employees: Employee[] = [];
   public editEmployee?: Employee;
+  public deleteEmployee?: Employee;
   public errorMessage: string = '';
   public showErrorMessage: boolean = false;
 
@@ -62,6 +63,17 @@ export class AppComponent implements OnInit{
     });    
   }
 
+  public onDeleteEmployee(employeeId: number): void {
+    this.employeeService.deleteEmployee(employeeId).subscribe((res: void) => {
+      console.log(res);
+      this.getEmployees();
+    },
+    (error: HttpErrorResponse) => {
+      this.errorMessage = error.message;
+      this.showErrorMessage = true;
+    });    
+  }
+
   public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
@@ -74,7 +86,10 @@ export class AppComponent implements OnInit{
         this.editEmployee = employee;
         button.setAttribute('data-bs-target', '#updateEmployeeModal'); 
         break;
-      case 'delete':  button.setAttribute('data-bs-target', '#deleteEmployeeModal'); break;
+      case 'delete':  
+        this.deleteEmployee = employee;
+        button.setAttribute('data-bs-target', '#deleteEmployeeModal');
+        break;
     }
     container?.appendChild(button);
     button.click();
