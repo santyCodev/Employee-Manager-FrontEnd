@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Employee } from './model/employee';
@@ -14,7 +15,6 @@ export class AppComponent implements OnInit{
   public editEmployee?: Employee;
   public deleteEmployee?: Employee;
   public errorMessage: string = '';
-  public showErrorMessage: boolean = false;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -29,12 +29,10 @@ export class AppComponent implements OnInit{
       }
       else {
         this.errorMessage = "No employees";
-        this.showErrorMessage = true;
       }
     },
     (error: HttpErrorResponse) => {
       this.errorMessage = error.message;
-      this.showErrorMessage = true;
     });
   }
 
@@ -47,7 +45,6 @@ export class AppComponent implements OnInit{
     },
     (error: HttpErrorResponse) => {
       this.errorMessage = error.message;
-      this.showErrorMessage = true;
       addForm.reset();
     });    
   }
@@ -59,7 +56,6 @@ export class AppComponent implements OnInit{
     },
     (error: HttpErrorResponse) => {
       this.errorMessage = error.message;
-      this.showErrorMessage = true;
     });    
   }
 
@@ -70,8 +66,23 @@ export class AppComponent implements OnInit{
     },
     (error: HttpErrorResponse) => {
       this.errorMessage = error.message;
-      this.showErrorMessage = true;
     });    
+  }
+
+  public searchEmployees(key: string): void {
+    const results: Employee[] = [];
+    this.employees.forEach(employee => {
+      if(employee.name.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || employee.email.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || employee.phone.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || employee.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+        results.push(employee);
+      }
+    });
+    this.employees = results;
+    if(results.length === 0 || !key) {
+      this.getEmployees();
+    }
   }
 
   public onOpenModal(employee: Employee, mode: string): void {
@@ -81,7 +92,9 @@ export class AppComponent implements OnInit{
     button.style.display = 'none';
     button.setAttribute('data-bs-toggle', 'modal');
     switch(mode) {
-      case 'add':     button.setAttribute('data-bs-target', '#addEmployeeModal'); break;
+      case 'add':     
+        button.setAttribute('data-bs-target', '#addEmployeeModal'); 
+        break;
       case 'edit':    
         this.editEmployee = employee;
         button.setAttribute('data-bs-target', '#updateEmployeeModal'); 

@@ -1,8 +1,14 @@
 <div class="container" id="main-container"> 
-  <button type="button" (click)="onOpenModal(null!,'add')" class="btn btn-primary">
-    Add Employee
-  </button>
-  <div *ngIf="!showErrorMessage" class="row">
+  <div class="row">
+    <button type="button" (click)="onOpenModal(null!,'add')" class="btn btn-primary">
+      Add Employee
+    </button>
+    <form class="form-inline my-2 my-lg-0">
+      <input type="search" (ngModelChange)="searchEmployees(key.value)" #key="ngModel" ngModel
+             name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees..." required>
+    </form>
+  </div>
+  <div class="row">
     <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
       <div class="card m-b-30">
         <div class="card-body row">
@@ -76,7 +82,7 @@
   </div>
 
   <!-- Update Employee Modal -->
-  <div class="modal fade" id="updateEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+  <div class="modal fade" id="updateEmployeeModal" tabindex="-1" aria-labelledby="updateEmployeeModalLabel" aria-hidden="true">
     <div class="modal-dialog"  role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -120,7 +126,7 @@
   </div>
 
   <!-- Delete Employee Modal -->
-  <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+  <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -140,4 +146,11 @@
     </div>
   </div>
 
+</div>
+
+<div *ngIf="employees?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">{{errorMessage}}</h4>
+    <p>No employees were found.</p>
+  </div>
 </div>
